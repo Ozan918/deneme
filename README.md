@@ -1,1 +1,1 @@
-deneme m3u
+ozan-mod m3u
