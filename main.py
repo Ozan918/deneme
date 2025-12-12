@@ -1,10 +1,19 @@
-from aiohttp import web
+import telebot
+import os
 
-async def handle(request):
-    return web.Response(text="Bot çalışıyor!")
+TOKEN = os.getenv("BOT_TOKEN")   # Render ortam değişkeni
+bot = telebot.TeleBot(TOKEN)
 
-app = web.Application()
-app.add_routes([web.get('/', handle)])
+BOT_ADI = "@m3ulive_bot"
 
-if __name__ == "__main__":
-    web.run_app(app, host="0.0.0.0", port=10000)
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message,
+                 f"Merhaba! 👋\n\nBen {BOT_ADI}.\n"
+                 "M3U8 yayın botuyum. Bana bir link veya komut gönder :)")
+
+@bot.message_handler(func=lambda m: True)
+def echo_all(message):
+    bot.reply_to(message, "Mesajını aldım: " + message.text)
+
+bot.infinity_polling()
